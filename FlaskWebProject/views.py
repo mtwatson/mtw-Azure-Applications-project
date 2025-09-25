@@ -73,7 +73,7 @@ def login():
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('home')
-            app.logger.info('Successful login.')
+            app.logger.warning('Successful login.')
         return redirect(next_page)
     session["state"] = str(uuid.uuid4())
     auth_url = _build_auth_url(scopes=Config.SCOPE, state=session["state"])
@@ -100,7 +100,7 @@ def authorized():
         # Here, we'll use the admin username for anyone who is authenticated by MS
         user = User.query.filter_by(username="admin").first()
         login_user(user)
-        app.logger.info('Microsoft SSO Login Success')
+        app.logger.warning('Microsoft SSO Login Success')
         _save_cache(cache)
     return redirect(url_for('home'))
 
